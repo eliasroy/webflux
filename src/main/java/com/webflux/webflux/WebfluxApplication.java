@@ -1,5 +1,6 @@
 package com.webflux.webflux;
 
+import com.webflux.webflux.models.Usuario;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,14 +18,22 @@ public class WebfluxApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Flux<String> nombres = Flux.just("", "Pedro Fulano", "Maria Fulana", "Diego Sultano", "Juan " +
-				"Mengano", "Bruce Lee").doOnNext(e->{
-			if(e.isEmpty()){
-				throw new RuntimeException("Nombre vacio");
+		Flux<String> nombres = Flux.just("a", "Pedro Fulano", "Maria Fulana", "Diego Sultano", "Juan " +
+				"Mengano", "Bruce Lee")
+				.map(nombre->new Usuario(nombre.toUpperCase(), ""))
+				.doOnNext(usuario -> {
+					if (usuario == null) {
+						throw new RuntimeException("Nombres no pueden ser vacíos");
+					}
+					System.out.println(usuario.getNombre().concat(" ").concat(usuario.getApellido()));
+				}).map(usuario -> usuario.getNombre().toLowerCase());
+
+		nombres.subscribe(e -> log.info(e), error -> log.info(error.getMessage()), new Runnable() {
+			@Override
+			public void run() {
+				log.info("Ha finalizado la ejecución del observable con éxito");
 			}
-			System.out.println(e);
 		});
-		nombres.subscribe(e -> log.info(e),error->log.info(error.getMessage()));
 
 	}
 }
