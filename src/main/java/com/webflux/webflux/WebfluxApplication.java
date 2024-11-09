@@ -18,9 +18,10 @@ public class WebfluxApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Flux<String> nombres = Flux.just("a", "Pedro Fulano", "Maria Fulana", "Diego Sultano", "Juan " +
+		Flux<String> nombres = Flux.just("xdxd", "Pedro Fulano", "Maria Fulana", "Diego Sultano", "Juan " +
 				"Mengano", "Bruce Lee")
 				.map(nombre->new Usuario(nombre.toUpperCase(), ""))
+				.filter(usuario -> usuario.getNombre().toLowerCase().contains("a"))
 				.doOnNext(usuario -> {
 					if (usuario == null) {
 						throw new RuntimeException("Nombres no pueden ser vacíos");
