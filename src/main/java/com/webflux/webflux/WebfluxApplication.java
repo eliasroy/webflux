@@ -19,8 +19,8 @@ public class WebfluxApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		Flux<String> nombres = Flux.just("xdxd", "Pedro Fulano", "Maria Fulana", "Diego Sultano", "Juan " +
-				"Mengano", "Bruce Lee")
-				.map(nombre->new Usuario(nombre.toUpperCase(), ""))
+				"Mengano", "Bruce Lee");
+		Flux<String>usuarios=	nombres.map(nombre->new Usuario(nombre.toUpperCase(), ""))
 				.filter(usuario -> usuario.getNombre().toLowerCase().contains("a"))
 				.doOnNext(usuario -> {
 					if (usuario == null) {
@@ -29,7 +29,7 @@ public class WebfluxApplication implements CommandLineRunner {
 					System.out.println(usuario.getNombre().concat(" ").concat(usuario.getApellido()));
 				}).map(usuario -> usuario.getNombre().toLowerCase());
 
-		nombres.subscribe(e -> log.info(e), error -> log.info(error.getMessage()), new Runnable() {
+		usuarios.subscribe(e -> log.info(e), error -> log.info(error.getMessage()), new Runnable() {
 			@Override
 			public void run() {
 				log.info("Ha finalizado la ejecución del observable con éxito");
