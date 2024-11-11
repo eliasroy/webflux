@@ -20,24 +20,17 @@ public class WebfluxApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
+		// Ejemplo de uso de Flux
+		ejemploFlatMap();
+
+	}
+	public void ejemploFlatMap(){
 		List<String> usuariosList = List.of("xdxd", "Pedro Fulano", "Maria Fulana", "Diego Sultano", "Juan " +
 				"Mengano", "Bruce Lee");
-		Flux<String> nombres = Flux.fromIterable(usuariosList);
-		Flux<String>usuarios=	nombres.map(nombre->new Usuario(nombre.toUpperCase(), ""))
+		       Flux.fromIterable(usuariosList)
+		        .map(nombre->new Usuario(nombre.toUpperCase(), ""))
 				.filter(usuario -> usuario.getNombre().toLowerCase().contains("a"))
-				.doOnNext(usuario -> {
-					if (usuario == null) {
-						throw new RuntimeException("Nombres no pueden ser vacíos");
-					}
-					System.out.println(usuario.getNombre().concat(" ").concat(usuario.getApellido()));
-				}).map(usuario -> usuario.getNombre().toLowerCase());
-
-		usuarios.subscribe(e -> log.info(e), error -> log.info(error.getMessage()), new Runnable() {
-			@Override
-			public void run() {
-				log.info("Ha finalizado la ejecución del observable con éxito");
-			}
-		});
-
+				.map(usuario -> usuario.getNombre().toLowerCase())
+		       .subscribe(e -> log.info(e));
 	}
 }
