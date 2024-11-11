@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import reactor.core.publisher.Flux;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 @SpringBootApplication
@@ -18,8 +19,10 @@ public class WebfluxApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Flux<String> nombres = Flux.just("xdxd", "Pedro Fulano", "Maria Fulana", "Diego Sultano", "Juan " +
+
+		List<String> usuariosList = List.of("xdxd", "Pedro Fulano", "Maria Fulana", "Diego Sultano", "Juan " +
 				"Mengano", "Bruce Lee");
+		Flux<String> nombres = Flux.fromIterable(usuariosList);
 		Flux<String>usuarios=	nombres.map(nombre->new Usuario(nombre.toUpperCase(), ""))
 				.filter(usuario -> usuario.getNombre().toLowerCase().contains("a"))
 				.doOnNext(usuario -> {
