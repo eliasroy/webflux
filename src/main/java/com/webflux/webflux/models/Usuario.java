@@ -22,4 +22,11 @@ public class Usuario {
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                '}';
+    }
 }

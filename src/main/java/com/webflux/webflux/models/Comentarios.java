@@ -4,11 +4,10 @@ import java.util.List;
 
 public class Comentarios {
     private List<String> comentarios;
-    public Comentarios() {
-    }
     public Comentarios(List<String> comentarios) {
         this.comentarios = comentarios;
     }
+
     public void addComentario(String comentario) {
         this.comentarios.add(comentario);
     }
