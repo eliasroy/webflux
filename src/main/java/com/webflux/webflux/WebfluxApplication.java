@@ -29,7 +29,13 @@ public class WebfluxApplication implements CommandLineRunner {
 				"Mengano", "Bruce Lee");
 		       Flux.fromIterable(usuariosList)
 		        .map(nombre->new Usuario(nombre.toUpperCase(), ""))
-				.filter(usuario -> usuario.getNombre().toLowerCase().contains("a"))
+				.flatMap(usuario -> {
+					if (usuario.getNombre().equalsIgnoreCase("bruce lee")) {
+						return Flux.just(usuario, new Usuario(usuario.getNombre().toLowerCase(), ""));
+					} else {
+						return Flux.just(usuario);
+					}
+				})
 				.map(usuario -> usuario.getNombre().toLowerCase())
 		       .subscribe(e -> log.info(e));
 	}
